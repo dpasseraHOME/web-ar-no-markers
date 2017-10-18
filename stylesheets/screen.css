@@ -1,0 +1,24 @@
+/*#video-container
+{
+	position: fixed;
+	width: 100%;
+}*/
+
+.overlay
+{
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	border: solid 2px purple;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+}
+
+#camera-stream
+{
+	position: fixed;
+	width: 100%;
+}

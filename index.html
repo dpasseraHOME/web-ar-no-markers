@@ -8,19 +8,28 @@
 
 		<!-- <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script> -->
 
-		<!-- <link rel="stylesheet" href="./stylesheets/screen.css" /> -->
+		<script src="./js/main.js"></script>
+
+		<link rel="stylesheet" href="./stylesheets/screen.css" />
 
 	</head>
 
 	<body>
 
-		<p>Tooty</p>
+		<!-- <p>Tooty ta</p> -->
 
-		<!-- <script>
+		<div id="video-container">
+            <video id="camera-stream" autoplay playsinline></video>
+
+	        <div class="overlay" id="reticle">
+			</div>
+        </div>
+
+		<script>
 			(function() {
 				init();
 			})();
-		</script> -->
+		</script>
 
 	</body>
 
