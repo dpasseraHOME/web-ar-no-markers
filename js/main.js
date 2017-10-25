@@ -1,3 +1,6 @@
+var isMouseDownOnReticle = false;
+var reticleElement;
+
 function init() {
 	console.log("# init");
 
@@ -17,4 +20,27 @@ function init() {
         function(error){
         }
     );
+
+    reticleElement = document.getElementById('reticle');
+
+    reticleElement.addEventListener('mousedown', function() {
+        isMouseDownOnReticle = true;
+    });
+
+    window.addEventListener('mouseup', function() {
+        isMouseDownOnReticle = false;
+    });
+
+    reticleElement.addEventListener('mousemove', function(e) {
+        if(isMouseDownOnReticle) {
+            handleReticleMouseMove(e);
+        }
+    });
+}
+
+function handleReticleMouseMove(e) {
+    var style = window.getComputedStyle(reticleElement, null);
+
+    reticleElement.style.height = parseInt(style.getPropertyValue('height')) + e.movementY + 'px';
+    reticleElement.style.width = parseInt(style.getPropertyValue('width')) + e.movementY + 'px';
 }
