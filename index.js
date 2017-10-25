@@ -9,6 +9,10 @@ app.get('/js/main.js', function(req, res) {
 	res.sendFile(__dirname+'/js/main.js');
 });
 
+app.get('/js/gyronorm.complete.min.js', function(req, res) {
+	res.sendFile(__dirname+'/js/gyronorm.complete.min.js');
+});
+
 app.get('/stylesheets/screen.css', function(req, res) {
 	res.sendFile(__dirname+'/stylesheets/screen.css');
 });

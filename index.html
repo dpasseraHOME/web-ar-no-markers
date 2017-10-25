@@ -9,12 +9,14 @@
 		<!-- <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script> -->
 
 		<script src="./js/main.js"></script>
+		<script src="./js/gyronorm.complete.min.js"></script>
 
 		<link rel="stylesheet" href="./stylesheets/screen.css" />
 
 	</head>
 
 	<body>
+		<div id='dpiMeasure' style='height: 1in; left: -100%; position: absolute; top: -100%; width: 1in;'></div>
 
 		<div id="video-container">
             <video id="camera-stream" autoplay playsinline></video>
@@ -22,7 +24,12 @@
 	        <div class="overlay">
 	        	<div id="reticle">
 	        	</div>
+	        	<button id="confirmScale">Confirm</button>
 			</div>
+        </div>
+
+        <div id="debugText">
+        	Debug
         </div>
 
 		<script>

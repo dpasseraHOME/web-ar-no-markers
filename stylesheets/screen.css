@@ -24,9 +24,17 @@
 	border: solid 2px purple;
 }
 
-.resize-drag
+#confirmScale
 {
-	box-sizing: border-box;
+	margin-top: 2em;
+}
+#debugText
+{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	background-color: black;
+	color: white;
 }
 
 #camera-stream
