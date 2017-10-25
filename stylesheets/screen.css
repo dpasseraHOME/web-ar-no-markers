@@ -4,17 +4,24 @@
 	width: 100%;
 }*/
 
-#reticle
+.overlay
 {
 	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	overflow: auto;
+	height: 100%;
+	width: 100%;
+}
+
+#reticle
+{
+	overflow: auto;
 	width: 200px;
 	height: 200px;
 	border: solid 2px purple;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	margin: auto;
 }
 
 .resize-drag
