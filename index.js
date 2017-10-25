@@ -1,20 +1,11 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
+
+app.use(express.static('public'));
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
-});
-
-app.get('/js/main.js', function(req, res) {
-	res.sendFile(__dirname+'/js/main.js');
-});
-
-app.get('/js/gyronorm.complete.min.js', function(req, res) {
-	res.sendFile(__dirname+'/js/gyronorm.complete.min.js');
-});
-
-app.get('/stylesheets/screen.css', function(req, res) {
-	res.sendFile(__dirname+'/stylesheets/screen.css');
 });
 
 http.listen(process.env.PORT || 8080, function() {

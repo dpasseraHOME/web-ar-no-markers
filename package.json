@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/dpasseraHOME/web-ar-no-markers/issues"
   },
-  "homepage": "https://github.com/dpasseraHOME/web-ar-no-markers#readme"
+  "homepage": "https://github.com/dpasseraHOME/web-ar-no-markers#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
