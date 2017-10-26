@@ -28,6 +28,7 @@ function init() {
         },
         function(error){
             console.log('XXX getUserMedia error');
+            console.log(error);
         }
     );
 
