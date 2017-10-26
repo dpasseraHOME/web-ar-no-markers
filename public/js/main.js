@@ -102,7 +102,7 @@ function handleReticleMouseUp(e) {
 }
 
 function handleReticleMouseMove(e) {
-    debugText.innerHTML = 'handleReticleMouseMove';
+    debugText.innerHTML = 'handleReticleMouseMove : '+e.movementY;
     if(isMouseDownOnReticle) {
         var style = window.getComputedStyle(reticleElement, null);
 
