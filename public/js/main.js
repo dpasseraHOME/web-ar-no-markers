@@ -1,6 +1,7 @@
 var MARKER_INCHES = 6;
 
 var isMouseDownOnReticle = false;
+var lastYValue = -1;
 
 var videoSelect;
 var videoElement;
@@ -121,8 +122,18 @@ function handleReticleTouchStart(e) {
 
 function handleReticleTouchMove(e) {
     e.preventDefault();
-    debugText.innerHTML = 'handleReticleTouchMove : '+evt.changedTouches[0].pageY;
+    debugText.innerHTML = 'handleReticleTouchMove : '+e.changedTouches[0].pageY;
 
+    if(lastYValue > -1) {
+        var dY = e.changedTouches[0].pageY - lastYValue;
+
+        var style = window.getComputedStyle(reticleElement, null);
+
+        reticleElement.style.height = parseInt(style.getPropertyValue('height')) + dY + 'px';
+        reticleElement.style.width = parseInt(style.getPropertyValue('width')) + dY + 'px';
+    }
+
+    lastYValue = e.changedTouches[0].pageY;
 }
 
 function handleReticleTouchEnd(e) {
