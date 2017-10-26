@@ -8,11 +8,16 @@ var gn;
 function init() {
 	console.log("# init");
 
-	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+	navigator.getUserMedia = (navigator.getUserMedia ||
+                                navigator.webkitGetUserMedia ||
+                                navigator.mozGetUserMedia || 
+                                navigator.msGetUserMedia);
 
 	var videoElement = document.getElementById("camera-stream");
 
-	navigator.getUserMedia({video:true}, function (stream){
+	navigator.getUserMedia(
+        {video:true},
+        function (stream){
             if (window.URL) {
                     videoElement.src = window.URL.createObjectURL(stream);
             } else if (videoElement.mozSrcObject !== undefined) {
@@ -22,6 +27,7 @@ function init() {
             }
         },
         function(error){
+            console.log('XXX getUserMedia error');
         }
     );
 
