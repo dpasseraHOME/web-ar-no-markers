@@ -25,7 +25,7 @@ function init() {
     window.addEventListener('mouseup', handleReticleMouseUp);
 
     reticleElement.addEventListener('touchstart', handleReticleTouchStart);
-    reticleElement.addEventListener('touchmove', handleReticleTouchMove);
+    reticleElement.addEventListener('touchmove', handleReticleTouchMove, false);
     reticleElement.addEventListener('touchend', handleReticleTouchEnd);
 
     document.getElementById('confirmScale').addEventListener('click', handleConfirmScale);
