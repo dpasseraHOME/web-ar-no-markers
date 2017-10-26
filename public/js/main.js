@@ -12,10 +12,6 @@ function init() {
 
 	var videoElement = document.getElementById("camera-stream");
 
-    debugText = document.getElementById('debugText');
-    
-    initGyro();
-
 	navigator.getUserMedia({video:true}, function (stream){
             if (window.URL) {
                     videoElement.src = window.URL.createObjectURL(stream);
@@ -28,6 +24,10 @@ function init() {
         function(error){
         }
     );
+
+    debugText = document.getElementById('debugText');
+    
+    initGyro();
 
     reticleElement = document.getElementById('reticle');
 
