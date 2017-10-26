@@ -24,9 +24,9 @@ function init() {
     reticleElement.addEventListener('mousemove', handleReticleMouseMove);
     window.addEventListener('mouseup', handleReticleMouseUp);
 
-    reticleElement.addEventListener('touchstart', handleReticleMouseDown);
-    reticleElement.addEventListener('touchmove', handleReticleMouseMove);
-    reticleElement.addEventListener('touchend', handleReticleMouseUp);
+    reticleElement.addEventListener('touchstart', handleReticleTouchStart);
+    reticleElement.addEventListener('touchmove', handleReticleTouchMove);
+    reticleElement.addEventListener('touchend', handleReticleTouchEnd);
 
     document.getElementById('confirmScale').addEventListener('click', handleConfirmScale);
 }
@@ -92,16 +92,19 @@ function handleError(error) {
 }
 
 function handleReticleMouseDown(e) {
+    e.preventDefault();
     debugText.innerHTML = 'handleReticleMouseDown';
     isMouseDownOnReticle = true;
 }
 
 function handleReticleMouseUp(e) {
+    e.preventDefault();
     debugText.innerHTML = 'handleReticleMouseUp';
     isMouseDownOnReticle = false;
 }
 
 function handleReticleMouseMove(e) {
+    e.preventDefault();
     debugText.innerHTML = 'handleReticleMouseMove : '+e.movementY;
     if(isMouseDownOnReticle) {
         var style = window.getComputedStyle(reticleElement, null);
@@ -111,10 +114,30 @@ function handleReticleMouseMove(e) {
     }
 }
 
+function handleReticleTouchStart(e) {
+    e.preventDefault();
+    debugText.innerHTML = 'handleReticleTouchStart';
+}
+
+function handleReticleTouchMove(e) {
+    e.preventDefault();
+    debugText.innerHTML = 'handleReticleTouchMove : '+evt.changedTouches[0].pageY;
+
+}
+
+function handleReticleTouchEnd(e) {
+    e.preventDefault();
+    debugText.innerHTML = 'handleReticleTouchEnd';
+}
+
 function handleConfirmScale(e) {
     reticleElement.removeEventListener('mousedown', handleReticleMouseDown);
     window.removeEventListener('mouseup', handleReticleMouseUp);
     reticleElement.removeEventListener('mousemove', handleReticleMouseMove);
+
+    reticleElement.removeEventListener('touchstart', handleReticleTouchStart);
+    reticleElement.removeEventListener('touchmove', handleReticleTouchMove);
+    reticleElement.removeEventListener('touchend', handleReticleTouchEnd);
 
     var bConfirm = document.getElementById('confirmScale');
     bConfirm.removeEventListener('click', handleConfirmScale);
