@@ -21,8 +21,13 @@ function init() {
     reticleElement = document.getElementById('reticle');
 
     reticleElement.addEventListener('mousedown', handleReticleMouseDown);
-    window.addEventListener('mouseup', handleReticleMouseUp);
     reticleElement.addEventListener('mousemove', handleReticleMouseMove);
+    window.addEventListener('mouseup', handleReticleMouseUp);
+
+    reticleElement.addEventListener('touchstart', handleReticleMouseDown);
+    reticleElement.addEventListener('touchmove', handleReticleMouseMove);
+    reticleElement.addEventListener('touchend', handleReticleMouseUp);
+
     document.getElementById('confirmScale').addEventListener('click', handleConfirmScale);
 }
 
@@ -39,23 +44,6 @@ function initVideo() {
         .then(gotDevices).then(getStream).catch(handleError);
 
     videoSelect.onchange = getStream;
-
-    // navigator.getUserMedia(
- //        {video:true},
- //        function (stream){
- //            if (window.URL) {
- //                    videoElement.src = window.URL.createObjectURL(stream);
- //            } else if (videoElement.mozSrcObject !== undefined) {
- //                    videoElement.mozSrcObject = stream;
- //            } else {
- //                    videoElement.src = stream;
- //            }
- //        },
- //        function(error){
- //            console.log('XXX getUserMedia error');
- //            console.log(error);
- //        }
- //    );
 }
 
 function gotDevices(deviceInfos) {
@@ -104,14 +92,17 @@ function handleError(error) {
 }
 
 function handleReticleMouseDown(e) {
+    debugText.innerHTML = 'handleReticleMouseDown';
     isMouseDownOnReticle = true;
 }
 
 function handleReticleMouseUp(e) {
+    debugText.innerHTML = 'handleReticleMouseUp';
     isMouseDownOnReticle = false;
 }
 
 function handleReticleMouseMove(e) {
+    debugText.innerHTML = 'handleReticleMouseMove';
     if(isMouseDownOnReticle) {
         var style = window.getComputedStyle(reticleElement, null);
 
@@ -140,9 +131,7 @@ function initGyro() {
 
     gn.init().then(function() {
         gn.start(function(data){
-            // console.log('gn start');
-            // console.log(data.do.alpha + " : " + data.do.beta + " : " + data.do.gamma + " : " + data.do.absolute);
-            debugText.innerHTML = data.do.alpha + " : " + data.do.beta + " : " + data.do.gamma + " : " + data.do.absolute;
+            // debugText.innerHTML = data.do.alpha + " : " + data.do.beta + " : " + data.do.gamma + " : " + data.do.absolute;
         })
     }).catch(function(e){
         alert('DeviceOrientation or DeviceMotion is not supported by the browser or device');

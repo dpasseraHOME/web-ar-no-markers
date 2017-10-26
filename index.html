@@ -6,6 +6,8 @@
 
 		<title>Web AR no markers</title>
 
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
 		<script src="./js/main.js"></script>
 		<script src="./js/gyronorm.complete.min.js"></script>
         <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
@@ -21,12 +23,14 @@
             <video id="camera-stream" autoplay playsinline></video>
 
 	        <div class="overlay">
+	        	<div class="select">
+					<label for="videoSource"></label><select id="videoSource"></select>
+				</div>
+
 	        	<div id="reticle">
 	        	</div>
+
 	        	<button id="confirmScale">Confirm</button>
-	        	<div class="select">
-					<label for="videoSource">Video source: </label><select id="videoSource"></select>
-				</div>
 			</div>
         </div>
 
