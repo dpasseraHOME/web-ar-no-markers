@@ -1,36 +1,18 @@
 var MARKER_INCHES = 6;
 
 var isMouseDownOnReticle = false;
+
+var videoSelect;
+var videoElement;
 var reticleElement;
 var debugText;
+
 var gn;
 
 function init() {
 	console.log("# init");
 
-	navigator.getUserMedia = (navigator.getUserMedia ||
-                                navigator.webkitGetUserMedia ||
-                                navigator.mozGetUserMedia || 
-                                navigator.msGetUserMedia);
-
-	var videoElement = document.getElementById("camera-stream");
-
-	navigator.getUserMedia(
-        {video:true},
-        function (stream){
-            if (window.URL) {
-                    videoElement.src = window.URL.createObjectURL(stream);
-            } else if (videoElement.mozSrcObject !== undefined) {
-                    videoElement.mozSrcObject = stream;
-            } else {
-                    videoElement.src = stream;
-            }
-        },
-        function(error){
-            console.log('XXX getUserMedia error');
-            console.log(error);
-        }
-    );
+    initVideo();
 
     debugText = document.getElementById('debugText');
     
@@ -42,6 +24,83 @@ function init() {
     window.addEventListener('mouseup', handleReticleMouseUp);
     reticleElement.addEventListener('mousemove', handleReticleMouseMove);
     document.getElementById('confirmScale').addEventListener('click', handleConfirmScale);
+}
+
+function initVideo() {
+    navigator.getUserMedia = (navigator.getUserMedia ||
+                                navigator.webkitGetUserMedia ||
+                                navigator.mozGetUserMedia || 
+                                navigator.msGetUserMedia);
+
+    videoElement = document.getElementById("camera-stream");
+    videoSelect = document.querySelector('select#videoSource');
+
+    navigator.mediaDevices.enumerateDevices()
+        .then(gotDevices).then(getStream).catch(handleError);
+
+    videoSelect.onchange = getStream;
+
+    // navigator.getUserMedia(
+ //        {video:true},
+ //        function (stream){
+ //            if (window.URL) {
+ //                    videoElement.src = window.URL.createObjectURL(stream);
+ //            } else if (videoElement.mozSrcObject !== undefined) {
+ //                    videoElement.mozSrcObject = stream;
+ //            } else {
+ //                    videoElement.src = stream;
+ //            }
+ //        },
+ //        function(error){
+ //            console.log('XXX getUserMedia error');
+ //            console.log(error);
+ //        }
+ //    );
+}
+
+function gotDevices(deviceInfos) {
+    for (var i = 0; i !== deviceInfos.length; ++i) {
+        var deviceInfo = deviceInfos[i];
+        var option = document.createElement('option');
+
+        option.value = deviceInfo.deviceId;
+
+        if (deviceInfo.kind === 'videoinput') {
+          option.text = deviceInfo.label || 'camera ' +
+            (videoSelect.length + 1);
+          videoSelect.appendChild(option);
+        } else {
+          console.log('Found ome other kind of source/device: ', deviceInfo);
+        }
+    }
+}
+
+function getStream() {
+    if (window.stream) {
+        window.stream.getTracks().forEach(function(track) {
+          track.stop();
+        });
+    }
+
+    var constraints = {
+        video: {
+          optional: [{
+            sourceId: videoSelect.value
+          }]
+        }
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints).
+    then(gotStream).catch(handleError);
+}
+
+function gotStream(stream) {
+    window.stream = stream; // make stream available to console
+    videoElement.srcObject = stream;
+}
+
+function handleError(error) {
+    console.log('Error: ', error);
 }
 
 function handleReticleMouseDown(e) {
