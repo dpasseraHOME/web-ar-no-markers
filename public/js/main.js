@@ -186,7 +186,7 @@ function initScene() {
 
 function onDeviceMove(data) {
     debugText.innerHTML = data.do.alpha + " : " + data.do.beta + " : " + data.do.gamma + " : " + data.do.absolute + "\n" + data.dm.x + " : " + data.dm.y + " : " + data.dm.z;
-    // camera.setAttribute('rotation', {x: data.do.alpha, y: data.do.beta, z: data.do.gamma});
+    camera.setAttribute('rotation', {x: data.do.alpha, y: data.do.beta, z: data.do.gamma});
 }
 
 function getScreenDPI() {
