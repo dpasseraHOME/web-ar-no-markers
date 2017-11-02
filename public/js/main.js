@@ -7,6 +7,7 @@ var videoSelect;
 var videoElement;
 var reticleElement;
 var debugText;
+var cameraElement;
 
 var gn;
 
@@ -169,7 +170,7 @@ function initGyro() {
 
     gn.init().then(function() {
         gn.start(function(data){
-            debugText.innerHTML = data.do.alpha + " : " + data.do.beta + " : " + data.do.gamma + " : " + data.do.absolute + "\n" + data.dm.x + " : " + data.dm.y + " : " + data.dm.z;
+            onDeviceMove(data);
         })
     }).catch(function(e){
         alert('DeviceOrientation or DeviceMotion is not supported by the browser or device');
@@ -179,6 +180,13 @@ function initGyro() {
 function initScene() {
     var scene = document.getElementById('scene');
     scene.classList.remove('hidden');
+
+    cameraElement = document.getElementById('camera');
+}
+
+function onDeviceMove(data) {
+    debugText.innerHTML = data.do.alpha + " : " + data.do.beta + " : " + data.do.gamma + " : " + data.do.absolute + "\n" + data.dm.x + " : " + data.dm.y + " : " + data.dm.z;
+    camera.setAttribute('rotation', {x: data.do.alpha, y: data.do.beta, z: data.do.gamma});
 }
 
 function getScreenDPI() {
