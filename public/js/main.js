@@ -17,19 +17,17 @@ function init() {
 
     debugText = document.getElementById('debugText');
     
-    initGyro();
-
     reticleElement = document.getElementById('reticle');
 
-    reticleElement.addEventListener('mousedown', handleReticleMouseDown);
-    reticleElement.addEventListener('mousemove', handleReticleMouseMove);
-    window.addEventListener('mouseup', handleReticleMouseUp);
+    reticleElement.addEventListener('mousedown', onReticleMouseDown);
+    reticleElement.addEventListener('mousemove', onReticleMouseMove);
+    window.addEventListener('mouseup', onReticleMouseUp);
 
-    reticleElement.addEventListener('touchstart', handleReticleTouchStart);
-    reticleElement.addEventListener('touchmove', handleReticleTouchMove, false);
-    reticleElement.addEventListener('touchend', handleReticleTouchEnd);
+    reticleElement.addEventListener('touchstart', onReticleTouchStart);
+    reticleElement.addEventListener('touchmove', onReticleTouchMove, false);
+    reticleElement.addEventListener('touchend', onReticleTouchEnd);
 
-    document.getElementById('confirmScale').addEventListener('click', handleConfirmScale);
+    document.getElementById('confirmScale').addEventListener('click', onConfirmScale);
 }
 
 function initVideo() {
@@ -42,7 +40,7 @@ function initVideo() {
     videoSelect = document.querySelector('select#videoSource');
 
     navigator.mediaDevices.enumerateDevices()
-        .then(gotDevices).then(getStream).catch(handleError);
+        .then(gotDevices).then(getStream).catch(onError);
 
     videoSelect.onchange = getStream;
 }
@@ -80,7 +78,7 @@ function getStream() {
     };
 
     navigator.mediaDevices.getUserMedia(constraints).
-    then(gotStream).catch(handleError);
+    then(gotStream).catch(onError);
 }
 
 function gotStream(stream) {
@@ -88,25 +86,25 @@ function gotStream(stream) {
     videoElement.srcObject = stream;
 }
 
-function handleError(error) {
+function onError(error) {
     console.log('Error: ', error);
 }
 
-function handleReticleMouseDown(e) {
+function onReticleMouseDown(e) {
     e.preventDefault();
-    debugText.innerHTML = 'handleReticleMouseDown';
+    debugText.innerHTML = 'onReticleMouseDown';
     isMouseDownOnReticle = true;
 }
 
-function handleReticleMouseUp(e) {
+function onReticleMouseUp(e) {
     e.preventDefault();
-    debugText.innerHTML = 'handleReticleMouseUp';
+    debugText.innerHTML = 'onReticleMouseUp';
     isMouseDownOnReticle = false;
 }
 
-function handleReticleMouseMove(e) {
+function onReticleMouseMove(e) {
     e.preventDefault();
-    debugText.innerHTML = 'handleReticleMouseMove : '+e.movementY;
+    debugText.innerHTML = 'onReticleMouseMove : '+e.movementY;
     if(isMouseDownOnReticle) {
         var style = window.getComputedStyle(reticleElement, null);
 
@@ -115,14 +113,14 @@ function handleReticleMouseMove(e) {
     }
 }
 
-function handleReticleTouchStart(e) {
+function onReticleTouchStart(e) {
     e.preventDefault();
-    debugText.innerHTML = 'handleReticleTouchStart';
+    debugText.innerHTML = 'onReticleTouchStart';
 }
 
-function handleReticleTouchMove(e) {
+function onReticleTouchMove(e) {
     e.preventDefault();
-    debugText.innerHTML = 'handleReticleTouchMove : '+e.changedTouches[0].pageY;
+    debugText.innerHTML = 'onReticleTouchMove : '+e.changedTouches[0].pageY;
 
     if(lastYValue > -1) {
         var dY = e.changedTouches[0].pageY - lastYValue;
@@ -136,40 +134,51 @@ function handleReticleTouchMove(e) {
     lastYValue = e.changedTouches[0].pageY;
 }
 
-function handleReticleTouchEnd(e) {
+function onReticleTouchEnd(e) {
     e.preventDefault();
-    debugText.innerHTML = 'handleReticleTouchEnd';
+    debugText.innerHTML = 'onReticleTouchEnd';
 }
 
-function handleConfirmScale(e) {
-    reticleElement.removeEventListener('mousedown', handleReticleMouseDown);
-    window.removeEventListener('mouseup', handleReticleMouseUp);
-    reticleElement.removeEventListener('mousemove', handleReticleMouseMove);
+function onConfirmScale(e) {
+    reticleElement.removeEventListener('mousedown', onReticleMouseDown);
+    window.removeEventListener('mouseup', onReticleMouseUp);
+    reticleElement.removeEventListener('mousemove', onReticleMouseMove);
 
-    reticleElement.removeEventListener('touchstart', handleReticleTouchStart);
-    reticleElement.removeEventListener('touchmove', handleReticleTouchMove);
-    reticleElement.removeEventListener('touchend', handleReticleTouchEnd);
+    reticleElement.removeEventListener('touchstart', onReticleTouchStart);
+    reticleElement.removeEventListener('touchmove', onReticleTouchMove);
+    reticleElement.removeEventListener('touchend', onReticleTouchEnd);
 
     var bConfirm = document.getElementById('confirmScale');
-    bConfirm.removeEventListener('click', handleConfirmScale);
+    bConfirm.removeEventListener('click', onConfirmScale);
     bConfirm.style.visibility = "hidden";
+
+    videoSelect.style.visibility = "hidden";
 
     var dpi = getScreenDPI();
     var style = window.getComputedStyle(reticleElement, null);
     var apparentWidth = parseInt(style.width) / dpi;
     console.log('marker apparent size = ' + apparentWidth + 'inches');
+
+    initGyro();
+    initScene();
 }
 
 function initGyro() {
+    console.log ('* initGyro');
     gn = new GyroNorm();
 
     gn.init().then(function() {
         gn.start(function(data){
-            // debugText.innerHTML = data.do.alpha + " : " + data.do.beta + " : " + data.do.gamma + " : " + data.do.absolute;
+            debugText.innerHTML = data.do.alpha + " : " + data.do.beta + " : " + data.do.gamma + " : " + data.do.absolute + "\n" + data.dm.x + " : " + data.dm.y + " : " + data.dm.z;
         })
     }).catch(function(e){
         alert('DeviceOrientation or DeviceMotion is not supported by the browser or device');
     }); 
+}
+
+function initScene() {
+    var scene = document.getElementById('scene');
+    scene.classList.remove('hidden');
 }
 
 function getScreenDPI() {
